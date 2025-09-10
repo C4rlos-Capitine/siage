@@ -6,14 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Instituicao_ensino extends Model
 {
-    protected $table = 'instituicao_ensino';
+  protected $table = 'instituicao_ensino';
     protected $primaryKey = 'id_instituicao_ensino';
     protected $fillable = [
         'designacao',
+        'abreviatura',
         'endereco',
         'telefone',
         'email',
-        'website',
-        'estado',
     ];
 }

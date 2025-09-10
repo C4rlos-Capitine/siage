@@ -10,6 +10,13 @@ class Ano_curricular extends Model
     protected $primaryKey = 'id_ano_curricular';
     protected $fillable = [
         'designacao',
-        'nivel_ensino_id',
+        'ordem',
+        'ciclo_id'
     ];
+
+    public function ciclo()
+    {
+        return $this->belongsTo(Ciclo::class, 'ciclo_id', 'id_ciclo');
+    }
+
 }

@@ -9,6 +9,11 @@ class ProvinciaController extends Controller
     public function index()
     {
         $provincias = Provincia::all();
+        return view('provincia.index');
+        //return response()->json($provincias);
+    }
+    public function list(){
+        $provincias = Provincia::all();
         return response()->json($provincias);
     }
 

@@ -3,33 +3,57 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Nivel_ensino;
 
 class Nivel_ensinoController extends Controller
 {
     public function index()
     {
-        $niveis_ensino = Nivel_ensino::all();
-        return view('nivel_ensino.index', compact('niveis_ensino'));
+        return view('nivel_ensino.index');
     }
 
-    public function create()
+    public function list()
     {
-        return view('nivel_ensino.create');
+        return response()->json(Nivel_ensino::all());
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'designacao' => 'required|string|max:255',
-            'abreviatura' => 'required|string|max:50',
+            'designacao' => 'required|string|max:45',
+            'abreviatura' => 'required|string|max:10',
+            'ordem' => 'required|integer',
         ]);
 
-        Nivel_ensino::create($request->all());
+        $nivel = Nivel_ensino::create($request->all());
 
-        return redirect()->route('nivel_ensino.index')
-                         ->with('success', 'Nível de Ensino criado com sucesso.');
+        return response()->json([
+            'message' => 'Nível de Ensino registrado com sucesso!',
+            'data' => $nivel
+        ], 201);
     }
 
+    public function update(Request $request, $id)
+    {
+        $nivel = Nivel_ensino::find($id);
+
+        if (!$nivel) {
+            return response()->json(['message' => 'Nível de Ensino não encontrado'], 404);
+        }
+
+        $request->validate([
+            'designacao' => 'sometimes|required|string|max:45',
+            'abreviatura' => 'sometimes|required|string|max:10',
+            'ordem' => 'sometimes|required|integer',
+        ]);
+
+        $nivel->update($request->all());
+
+        return response()->json([
+            'message' => 'Nível de Ensino atualizado com sucesso!',
+            'data' => $nivel
+        ]);
+    }
     public function show($id)
     {
         $nivel_ensino = Nivel_ensino::find($id);
@@ -40,20 +64,6 @@ class Nivel_ensinoController extends Controller
     {
         $nivel_ensino = Nivel_ensino::find($id);
         return view('nivel_ensino.edit', compact('nivel_ensino'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'designacao' => 'required|string|max:255',
-            'abreviatura' => 'required|string|max:50',
-        ]);
-
-        $nivel_ensino = Nivel_ensino::find($id);
-        $nivel_ensino->update($request->all());
-
-        return redirect()->route('nivel_ensino.index')
-                         ->with('success', 'Nível de Ensino atualizado com sucesso.');
     }
 
     public function destroy($id)

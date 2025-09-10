@@ -12,9 +12,6 @@ class Disciplina extends Model
         'designacao',
         'abreviatura',
         'area_curricular_id',
-        'ciclo_id',
-        'ano_curricular_id',
-        'nivel_ensino_id',
-        'estado',
+        'nivel_ensino_id'
     ];
 }
